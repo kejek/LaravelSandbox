@@ -4,19 +4,27 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ImageServiceTest extends TestCase
 {
-    public function testImageUploadPost(){
+    public function setUp() : void
+    {
+        parent::setUp();
+        Storage::fake('s3');
+    }
 
+    public function testImageUploadPost(){
         $data = [
-            "name"=>"file.jpg",
-            "file"=>"file"
+            "title" => "Test",
+            "image" => UploadedFile::fake()->image('myImage.jpg')
         ];
 
-        $response = $this->post('/api/upload_image', $data);
+        $response = $this->post('/upload', $data);
 
-        $response->assertStatus(200);
+        //should get redirected back to home
+        $response->assertStatus(302);
     }
 }
