@@ -10,6 +10,8 @@ use Tests\TestCase;
 
 class ImageServiceTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function setUp() : void
     {
         parent::setUp();

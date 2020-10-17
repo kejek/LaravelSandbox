@@ -36,7 +36,7 @@ class ImageService
         });
         $thumbnail->title = $request->title;
         $thumbnail->type = "Thumbnail";
-        Storage::disk('s3')->put('images/thumbnail/'.$imageName, $img->stream());
+        Storage::disk('s3')->put('images/thumbnail/'.$imageName, $img->stream(), 'public');
         $thumbnail->path = 'images/thumbnail/'.$imageName;
         $thumbnail->size =  Storage::disk('s3')->size( $thumbnail->path);
         return $thumbnail;
@@ -52,7 +52,7 @@ class ImageService
         );
         $webOptimized->title = $request->title;
         $webOptimized->type = "Web Optimized";
-        Storage::disk('s3')->put('images/'.$imageName, $jpg->stream());
+        Storage::disk('s3')->put('images/'.$imageName, $jpg->stream(), 'public');
         $webOptimized->path = 'images/'.$imageName;
         $webOptimized->size =  Storage::disk('s3')->size( $webOptimized->path);
         return $webOptimized;
@@ -63,7 +63,7 @@ class ImageService
         $original = new AppImage();
         $original->title = $request->title;
         $original->type = "Original";
-        Storage::disk('s3')->put('images/original/'.$imageName, $img->stream());
+        Storage::disk('s3')->put('images/original/'.$imageName, $img->stream(), 'public');
         $original->path = 'images/original/'.$imageName;
         $original->size =  Storage::disk('s3')->size( $original->path);
         return $original;
