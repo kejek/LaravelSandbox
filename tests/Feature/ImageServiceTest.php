@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Image;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -28,5 +29,50 @@ class ImageServiceTest extends TestCase
 
         //should get redirected back to home
         $response->assertStatus(302);
+    }
+
+    public function testImageIsSavedInDatabaseAsOriginal(){
+        $data = [
+            "title" => "Test",
+            "image" => UploadedFile::fake()->image('myImage.jpg')
+        ];
+
+        $this->post('/upload', $data);
+
+        $this->assertDatabaseHas('images', [
+            'type' => 'Original',
+            'title' => 'Test'
+        ]);
+
+    }
+
+    public function testImageIsSavedInDatabaseAsThumbnail(){
+        $data = [
+            "title" => "Test",
+            "image" => UploadedFile::fake()->image('myImage.jpg')
+        ];
+
+        $this->post('/upload', $data);
+
+        $this->assertDatabaseHas('images', [
+            'type' => 'Thumbnail',
+            'title' => 'Test'
+        ]);
+
+    }
+
+    public function testImageIsSavedInDatabaseAsOptimized(){
+        $data = [
+            "title" => "Test",
+            "image" => UploadedFile::fake()->image('myImage.jpg')
+        ];
+
+        $this->post('/upload', $data);
+
+        $this->assertDatabaseHas('images', [
+            'type' => 'Web Optimized',
+            'title' => 'Test'
+        ]);
+
     }
 }
